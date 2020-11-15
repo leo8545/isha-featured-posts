@@ -15,24 +15,38 @@ final class Isha_Featured_Posts
 {
 	public function __construct()
 	{
-		$this->define_public_hooks();
 		$this->define_admin_hooks();
+		$this->define_public_hooks();
 	}
 
 	public function define_admin_hooks()
 	{
+		add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
 		add_filter('manage_post_posts_columns', [$this, 'set_post_columns']);
 		add_filter('manage_post_posts_custom_column', [$this, 'set_post_columns_content'], 10, 2);
+		add_action('wp_ajax_isha_fp_action', [$this, 'ajax_handler']);
 	}
 
 	public function define_public_hooks()
 	{
+	}
 
+	public function enqueue_admin_scripts($hook)
+	{
+		$uri = ISHA_FP_URI . 'assets/';
+		wp_enqueue_style('isha_fp_style', $uri . 'css/admin.style.css', [], ISHA_FP_VERSION);
+		if('edit.php' === $hook) {
+			wp_enqueue_style( 'font-awesome', 'https://pro.fontawesome.com/releases/v5.10.0/css/all.css' );
+		}
+		wp_enqueue_script('isha_fp_script', $uri . 'js/admin.script.js', ['jquery'], ISHA_FP_VERSION, true);
+		wp_localize_script('isha_fp_script', 'ajax_object', [
+			'ajax_url' => admin_url( 'admin-ajax.php' )
+		]);
 	}
 
 	public function set_post_columns($columns)
 	{
-		$columns['isha_feature_post'] = __('Featured', 'isha_fp');
+		$columns['isha_feature_post'] = '<i class="fas fa-star" title="Featured"></i>';
 		return $columns;
 	}
 
@@ -40,15 +54,33 @@ final class Isha_Featured_Posts
 	{
 		switch($column) {
 			case 'isha_feature_post':
+				$isFeatured = get_post_meta($post_id, 'isha_fp_isFeatured', true) ?: 'no';
 				?>
-					<input type="radio" name="isha_fp[is_featured]" value="yes" id="isha_fp_is_featured_yes">
-					<label for="isha_fp_is_featured_yes">Yes</label>
-					<input type="radio" name="isha_fp[is_featured]" value="no" id="isha_fp_is_featured_no">
-					<label for="isha_fp_is_featured_no">No</label>
-					<input type="hidden" name="isha_fp[post_id]" value="<?php echo $post_id ?>">
+				<a 
+					href="#"
+					id="isha_fp_is_featured-<?php echo $post_id; ?>" 
+					class="isha_fp_is_featured" 
+					data-post_id="<?php echo $post_id; ?>"
+					data-is_featured="<?php echo $isFeatured; ?>"
+				>
+					<i 
+						class="<?php echo $isFeatured === 'yes' ? 'fas' : 'far' ?> fa-star" 
+						title="<?php echo ucfirst($isFeatured) ?>"
+					></i>
+				</a>
 				<?php
 			break;
 		}
+	}
+
+	public function ajax_handler()
+	{
+		$post_id = (int) $_POST['postId'];
+		$isFeatured = (bool) $_POST['isFeatured'] ? 'yes' : 'no';
+		if($post_id) {
+			update_post_meta($post_id, 'isha_fp_isFeatured', $isFeatured);
+		}
+		wp_die();
 	}
 }
 

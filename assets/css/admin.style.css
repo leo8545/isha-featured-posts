@@ -1,0 +1,6 @@
+.isha_fp_is_featured i {
+	font-size: 120%;
+}
+.isha_fp_is_featured:focus {
+	outline: none;
+}
