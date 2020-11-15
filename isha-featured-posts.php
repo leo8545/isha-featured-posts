@@ -15,6 +15,7 @@ final class Isha_Featured_Posts
 {
 	public function __construct()
 	{
+		$this->load_dependencies();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 	}
@@ -45,6 +46,13 @@ final class Isha_Featured_Posts
 		]);
 	}
 
+	public function load_dependencies()
+	{
+		$dir = ISHA_FP_DIR . 'inc/';
+
+		require $dir . 'helpers.php';
+	}
+
 	public function set_post_columns($columns)
 	{
 		$columns['isha_feature_post'] = '<i class="fas fa-star" title="Featured"></i>';
@@ -68,7 +76,7 @@ final class Isha_Featured_Posts
 						class="<?php echo $isFeatured === 'yes' ? 'fas' : 'far' ?> fa-star" 
 						title="<?php echo ucfirst($isFeatured) ?>"
 					></i>
-				</a>
+				</a> 
 				<?php
 			break;
 		}
@@ -86,16 +94,19 @@ final class Isha_Featured_Posts
 
 	public function feature_post_shortcode_cb($atts)
 	{
-		ob_start();
-		$query = new WP_Query([
-			'post_type' => 'post',
-			'meta_key' => 'isha_fp_isFeatured',
-			'meta_value' => 'yes'
-		]);
+		$atts = shortcode_atts([
+			'layout' => 'grid',
+			'show_meta' => true,
+			'show_read_more' => true
+		], $atts);
+
+		$dir = ISHA_FP_DIR . 'templates/';
 		
-		echo '<pre>';
-		print_r($query->posts);
-		echo '</pre>';
+		ob_start();
+
+		if($atts['layout'] === 'grid') {
+			require $dir . 'isha-layout-grid.php';
+		}
 
 		$output = ob_get_clean();
 		return $output;
