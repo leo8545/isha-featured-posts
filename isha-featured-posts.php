@@ -29,6 +29,7 @@ final class Isha_Featured_Posts
 
 	public function define_public_hooks()
 	{
+		add_shortcode('isha_featured_posts', [$this, 'feature_post_shortcode_cb']);
 	}
 
 	public function enqueue_admin_scripts($hook)
@@ -76,11 +77,28 @@ final class Isha_Featured_Posts
 	public function ajax_handler()
 	{
 		$post_id = (int) $_POST['postId'];
-		$isFeatured = (bool) $_POST['isFeatured'] ? 'yes' : 'no';
+		$isFeatured = $_POST['isFeatured'] === 'true' ? 'yes' : 'no';
 		if($post_id) {
 			update_post_meta($post_id, 'isha_fp_isFeatured', $isFeatured);
 		}
 		wp_die();
+	}
+
+	public function feature_post_shortcode_cb($atts)
+	{
+		ob_start();
+		$query = new WP_Query([
+			'post_type' => 'post',
+			'meta_key' => 'isha_fp_isFeatured',
+			'meta_value' => 'yes'
+		]);
+		
+		echo '<pre>';
+		print_r($query->posts);
+		echo '</pre>';
+
+		$output = ob_get_clean();
+		return $output;
 	}
 }
 
