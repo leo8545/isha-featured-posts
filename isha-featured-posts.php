@@ -31,6 +31,7 @@ final class Isha_Featured_Posts
 	public function define_public_hooks()
 	{
 		add_shortcode('isha_featured_posts', [$this, 'feature_post_shortcode_cb']);
+		add_action('wp_enqueue_scripts',[$this, 'enqueue_public_scripts'] );
 	}
 
 	public function enqueue_admin_scripts($hook)
@@ -44,6 +45,13 @@ final class Isha_Featured_Posts
 		wp_localize_script('isha_fp_script', 'ajax_object', [
 			'ajax_url' => admin_url( 'admin-ajax.php' )
 		]);
+	}
+
+	public function enqueue_public_scripts($hook)
+	{
+		$uri = ISHA_FP_URI . 'assets/';
+
+		wp_enqueue_style('isha_fp_style', $uri . 'css/public.style.min.css', [], ISHA_FP_VERSION);
 	}
 
 	public function load_dependencies()
