@@ -55,11 +55,7 @@ final class Isha_Featured_Posts
 	}
 
 	public function load_dependencies()
-	{
-		$dir = ISHA_FP_DIR . 'inc/';
-
-		require $dir . 'helpers.php';
-	}
+	{}
 
 	public function set_post_columns($columns)
 	{
