@@ -46,17 +46,29 @@
 		flex-wrap: wrap;
 		margin: 5px;
 		padding: 5px;
+		* {
+			box-sizing: border-box;
+		}
 		.post-thumbnail {
 			flex: 0 1 10%;
+			@media (max-width: 450px) {
+				flex-basis: 20%;
+			}
 			img {
-				max-width: 100px;
-				// display: block;
-				// margin: 0 auto;
+				@media (min-width: 1200px) {
+					max-width: 100px;
+				}
+				display: block;
+				margin: 0 auto;
 			}
 		}
 		.post-body {
 			flex: 0 1 90%;
+			@media (max-width: 450px) {
+				flex-basis: 80%;
+			}
 			position: relative;
+			padding-left: 15px;
 			.post-title {
 				font-size: 120%;
 				font-weight: 600;
