@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Template for grid layout for shortcode isha_featured_posts
+ * @since 1.0.0
+ */
+
+if(!defined('ABSPATH')) exit();
+
 $query = new WP_Query([
 	'post_type' => 'post',
 	'meta_key' => 'isha_fp_isFeatured',
