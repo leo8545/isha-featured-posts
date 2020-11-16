@@ -37,3 +37,37 @@
 		}
 	}
 }
+.isha-fp-posts-list-container {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	.isha-fp-single-post-card {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 5px;
+		padding: 5px;
+		.post-thumbnail {
+			flex: 0 1 10%;
+			img {
+				max-width: 100px;
+				// display: block;
+				// margin: 0 auto;
+			}
+		}
+		.post-body {
+			flex: 0 1 90%;
+			position: relative;
+			.post-title {
+				font-size: 120%;
+				font-weight: 600;
+				padding-bottom: 10px;
+			}
+			.post-meta {
+				font-size: 80%;
+				& > * {
+					padding-bottom: 3px;
+				}
+			}
+		}
+	}
+}
