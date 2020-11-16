@@ -114,6 +114,8 @@ final class Isha_Featured_Posts
 
 		if($atts['layout'] === 'grid') {
 			require $dir . 'isha-layout-grid.php';
+		} else {
+			require $dir . 'isha-layout-list.php';
 		}
 
 		$output = ob_get_clean();
