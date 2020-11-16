@@ -53,5 +53,6 @@ $query = new WP_Query([
 				<?php
 			endwhile;
 		endif;
+		wp_reset_postdata();
 	?>
 </ul>
