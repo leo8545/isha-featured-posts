@@ -26,6 +26,7 @@ final class Isha_Featured_Posts
 		add_filter('manage_post_posts_columns', [$this, 'set_post_columns']);
 		add_filter('manage_post_posts_custom_column', [$this, 'set_post_columns_content'], 10, 2);
 		add_action('wp_ajax_isha_fp_action', [$this, 'ajax_handler']);
+		add_action('widgets_init', [$this, 'register_widgets']);
 	}
 
 	public function define_public_hooks()
@@ -55,7 +56,10 @@ final class Isha_Featured_Posts
 	}
 
 	public function load_dependencies()
-	{}
+	{
+		$dir = ISHA_FP_DIR . 'inc/';
+		require $dir . 'class-isha-fp-widget.php';
+	}
 
 	public function set_post_columns($columns)
 	{
@@ -116,6 +120,11 @@ final class Isha_Featured_Posts
 
 		$output = ob_get_clean();
 		return $output;
+	}
+
+	public function register_widgets()
+	{
+		register_widget(IshaFpWidget::class);
 	}
 }
 
