@@ -12,7 +12,14 @@ class IshaFpWidget extends WP_Widget
     }
  
     public function widget( $args, $instance ) {
-        // outputs the content of the widget
+		// outputs the content of the widget
+		$dir = ISHA_FP_DIR . 'templates/';
+		$atts = $instance;
+		if($atts['layout'] === 'grid') {
+			require $dir . 'isha-layout-grid.php';
+		} else {
+			require $dir . 'isha-layout-list.php';
+		}
     }
  
     public function form( $instance ) {
@@ -72,7 +79,19 @@ class IshaFpWidget extends WP_Widget
 				<input type="radio" name="<?php echo $this->get_field_name('show_read_more') ?>" id="<?php echo $this->get_field_id( $this->get_field_name('show_read_more') . '_no' ) ?>" value="no" <?php checked($show_read_more, 'no') ?> >
 				No
 			</label>
-
+			<?php
+			// Field 3: Show read more
+			if ( isset( $instance[ 'count' ] ) ) {
+				$count = (int) $instance[ 'count' ];
+			}
+			else {
+				$count = -1;
+			}
+			?>
+			<label for="<?php echo $this->get_field_id( $this->get_field_name('count') ) ?>">
+				<p>Number of posts to show (<i>-1 to show all</i>):</p>
+				<input type="number" min="-1" name="<?php echo $this->get_field_name('count') ?>" id="<?php echo $this->get_field_id( $this->get_field_name('count') ) ?>" value="<?php echo $count ?>" />
+			</label>
 		</div>
 		<?php
     }
@@ -83,6 +102,7 @@ class IshaFpWidget extends WP_Widget
 		$instance['layout'] = !empty($new_instance['layout']) ? $new_instance['layout'] : 'grid';
 		$instance['show_meta'] = !empty($new_instance['show_meta']) ? $new_instance['show_meta'] : 'yes';
 		$instance['show_read_more'] = !empty($new_instance['show_read_more']) ? $new_instance['show_read_more'] : 'yes';
+		$instance['count'] = !empty($new_instance['count']) ? (int) $new_instance['count'] : -1;
 		return $instance;
     }
 }

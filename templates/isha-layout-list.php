@@ -11,9 +11,20 @@ $query = new WP_Query([
 	'post_type' => 'post',
 	'meta_key' => 'isha_fp_isFeatured',
 	'meta_value' => 'yes',
+	'posts_per_page' => !empty($atts['count']) ? (int) $atts['count'] : -1
 	// 'orderby' => 'post_title',
 	// 'order' => 'ASC'
 ]);
+$show_read_more = 'yes';
+$show_meta = 'yes';
+if(@$atts) {
+	if(@$atts['show_read_more'] && in_array($atts['show_read_more'], ['yes', 'no'])) {
+		$show_read_more = $atts['show_read_more'];
+	}
+	if(@$atts['show_meta'] && in_array($atts['show_meta'], ['yes', 'no'])) {
+		$show_meta = $atts['show_meta'];
+	}
+}
 ?>
 <ul class="isha-fp-posts-list-container">
 	<?php

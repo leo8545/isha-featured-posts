@@ -10,8 +10,20 @@ if(!defined('ABSPATH')) exit();
 $query = new WP_Query([
 	'post_type' => 'post',
 	'meta_key' => 'isha_fp_isFeatured',
-	'meta_value' => 'yes'
+	'meta_value' => 'yes',
+	'posts_per_page' => !empty($atts['count']) ? (int) $atts['count'] : -1
 ]);
+$show_read_more = 'yes';
+$show_meta = 'yes';
+if(@$atts) {
+	if(@$atts['show_read_more'] && in_array($atts['show_read_more'], ['yes', 'no'])) {
+		$show_read_more = $atts['show_read_more'];
+	}
+	if(@$atts['show_meta'] && in_array($atts['show_meta'], ['yes', 'no'])) {
+		$show_meta = $atts['show_meta'];
+	}
+}
+
 ?>
 <ul class="isha-fp-posts-grid-container">
 	<?php
@@ -29,7 +41,7 @@ $query = new WP_Query([
 							</header>
 						<?php endif; ?>
 						<div class="post-body">
-							<?php if($atts['show_meta']) : ?>
+							<?php if($show_meta === 'yes') : ?>
 								<div class="post-meta">
 									<div class="post-date"><?php echo get_the_date() ?></div>
 								</div>
@@ -43,7 +55,7 @@ $query = new WP_Query([
 								<p><?php 
 									echo substr(get_the_excerpt(), 0, 100); 
 									if(strlen(get_the_excerpt()) > 100) echo '...';
-									if($atts['show_read_more'] === true) {
+									if($show_read_more === 'yes') {
 										echo sprintf(' <a href="%s" class="read-more">%s</a>', get_the_permalink(), apply_filters('isha_fp_read_more_text', 'Read more'));
 									}
 								?></p>
