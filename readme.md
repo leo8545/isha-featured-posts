@@ -13,8 +13,9 @@ All featured posts can also be shown on frontend via shortcode and also via widg
 
 ### Shortcode Attributes
 
-| Attributes       |   Options   | Default |
-| ---------------- | :---------: | ------: |
-| `layout`         | grid, list  |    grid |
-| `show_meta`      | true, false |    true |
-| `show_read_more` | true, false |    true |
+| Attribute                         |      Options      |          Default |
+| --------------------------------- | :---------------: | ---------------: |
+| `layout`                          |    grid, list     |             grid |
+| `show_meta`                       |    true, false    |             true |
+| `show_read_more`                  |    true, false    |             true |
+| `count` (Number of posts to show) | -1 to any integer | -1 (to show all) |
