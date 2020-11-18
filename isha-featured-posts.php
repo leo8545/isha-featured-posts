@@ -105,7 +105,8 @@ final class Isha_Featured_Posts
 		$atts = shortcode_atts([
 			'layout' => 'grid',
 			'show_meta' => true,
-			'show_read_more' => true
+			'show_read_more' => true,
+			'count' => -1
 		], $atts);
 
 		$dir = ISHA_FP_DIR . 'templates/';
