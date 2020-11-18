@@ -104,8 +104,8 @@ final class Isha_Featured_Posts
 	{
 		$atts = shortcode_atts([
 			'layout' => 'grid',
-			'show_meta' => true,
-			'show_read_more' => true,
+			'show_meta' => 'yes',
+			'show_read_more' => 'yes',
 			'count' => -1
 		], $atts);
 
